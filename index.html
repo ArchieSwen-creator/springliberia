@@ -4,47 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spring of Hope International | mental health & suicide prevention</title>
-    <!-- Tailwind via CDN + basic style for carousel dots and smooth scroll -->
+    <!-- Tailwind via CDN + AOS for scroll animations + Chart.js for charts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons (optional but adds dynamism) -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS (Animate on Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom style for parallax, carousel, etc -->
     <style>
-        /* carousel fade & manual dots – minimal extra css */
+        /* carousel fade & dots */
         .carousel-fade { animation: fade 1s ease-in-out; }
         @keyframes fade { 0% { opacity:0.4; } 100% { opacity:1; } }
         .dot.active { background-color: #0f766e; transform: scale(1.2); } /* teal-700 */
         html { scroll-behavior: smooth; }
+
+        /* Parallax base */
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            transition: background 0.3s ease;
+        }
+
+        /* Glassmorphism cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* hover lift */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* chart container size */
+        .chart-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
     </style>
 </head>
-<body class="font-sans antialiased text-gray-800 bg-gray-50">
+<body class="font-sans antialiased text-gray-800 bg-gray-50 overflow-x-hidden">
 
-    <!-- ===== NAVBAR (responsive) with actual JPEG logo ===== -->
-    <nav class="bg-teal-700 text-white shadow-lg sticky top-0 z-30">
+    <!-- ===== NAVBAR (sticky with blur/glass) ===== -->
+    <nav class="bg-teal-800/90 backdrop-blur-sm text-white shadow-lg sticky top-0 z-30 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- logo / brand: using uploaded logo.jpeg -->
-                <div class="flex items-center space-x-2">
-                    <!-- logo image (JPEG) replaced previous icon -->
-                    <img src="logo.jpeg" alt="Spring of Hope International logo" class="h-10 w-auto rounded shadow-sm">
-                    <span class="font-bold text-xl tracking-tight hidden sm:inline">Spring of Hope <span class="hidden lg:inline">International</span></span>
+                <!-- logo + name -->
+                <div class="flex items-center space-x-2 group">
+                    <img src="logo.jpeg" alt="Spring of Hope International logo" class="h-10 w-auto rounded shadow-md transition-transform duration-300 group-hover:scale-110">
+                    <span class="font-bold text-xl tracking-tight hidden sm:inline bg-gradient-to-r from-amber-200 to-yellow-100 bg-clip-text text-transparent">Spring of Hope <span class="hidden lg:inline">International</span></span>
                 </div>
-                <!-- desktop menu (hidden on mobile) -->
+                <!-- desktop menu -->
                 <div class="hidden md:flex space-x-6 text-sm font-medium">
-                    <a href="#home" class="hover:bg-teal-800 px-3 py-2 rounded transition">Home</a>
-                    <a href="#about" class="hover:bg-teal-800 px-3 py-2 rounded transition">About</a>
-                    <a href="#programs" class="hover:bg-teal-800 px-3 py-2 rounded transition">Programs</a>
-                    <a href="#get-help" class="hover:bg-teal-800 px-3 py-2 rounded transition">Get help</a>
-                    <a href="#volunteer" class="hover:bg-teal-800 px-3 py-2 rounded transition">Volunteer</a>
-                    <a href="#resources" class="hover:bg-teal-800 px-3 py-2 rounded transition">Resources</a>
-                    <a href="#news" class="hover:bg-teal-800 px-3 py-2 rounded transition">News</a>
-                    <a href="#donate" class="hover:bg-teal-800 px-3 py-2 rounded transition">Donate</a>
-                    <a href="#contact" class="hover:bg-teal-800 px-3 py-2 rounded transition">Contact</a>
+                    <a href="#home" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">Home</a>
+                    <a href="#about" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">About</a>
+                    <a href="#programs" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">Programs</a>
+                    <a href="#get-help" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">Get help</a>
+                    <a href="#volunteer" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">Volunteer</a>
+                    <a href="#resources" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">Resources</a>
+                    <a href="#news" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">News</a>
+                    <a href="#donate" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">Donate</a>
+                    <a href="#contact" class="hover:bg-teal-600/50 px-3 py-2 rounded transition-all duration-200 hover:scale-105">Contact</a>
                 </div>
-                <!-- mobile hamburger (simple anchor list) -->
+                <!-- mobile menu (same) -->
                 <div class="md:hidden relative group">
-                    <button class="p-2 rounded hover:bg-teal-800"><i class="fas fa-bars text-xl"></i></button>
-                    <div class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg hidden group-hover:block focus-within:block z-40">
-                        <a href="#home" class="block px-4 py-2 hover:bg-teal-100">Home</a>
+                    <button class="p-2 rounded hover:bg-teal-700 transition"><i class="fas fa-bars text-xl"></i></button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-sm text-gray-800 rounded shadow-xl hidden group-hover:block focus-within:block z-40 border border-teal-200">
+                        <a href="#home" class="block px-4 py-2 hover:bg-teal-100 transition">Home</a>
                         <a href="#about" class="block px-4 py-2 hover:bg-teal-100">About</a>
                         <a href="#programs" class="block px-4 py-2 hover:bg-teal-100">Programs</a>
                         <a href="#get-help" class="block px-4 py-2 hover:bg-teal-100">Get help</a>
@@ -60,231 +97,262 @@
     </nav>
 
     <main>
-        <!-- ===== HOME SECTION (with carousel) ===== -->
-        <section id="home" class="pt-8 pb-16 bg-gradient-to-b from-teal-50 to-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- Carousel container (dynamic simple manual) -->
-                <div class="relative w-full h-64 md:h-96 overflow-hidden rounded-2xl shadow-xl mb-12">
-                    <!-- slides (we will use javascript to cycle) -->
-                    <div id="carousel-slide" class="w-full h-full bg-cover bg-center transition-all duration-700 carousel-fade" style="background-image: linear-gradient(45deg, #115e59bb, #2c4a4ecc), url('https://images.unsplash.com/photo-1576765973723-c1c3aee5f6a6?q=80&w=2070&auto=format&fit=crop'); background-blend-mode: overlay;">
-                        <!-- content overlayed in slide managed by JS, but we can keep a default caption -->
+        <!-- ===== HOME with PARALLAX + CAROUSEL ===== -->
+        <section id="home" class="relative">
+            <!-- parallax background -->
+            <div class="parallax absolute inset-0 z-0" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2070&auto=format&fit=crop'); opacity: 0.15;"></div>
+            <div class="relative z-10 pt-8 pb-16 bg-gradient-to-b from-transparent to-white/60 backdrop-blur-[2px]">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Carousel with extra animation -->
+                    <div class="relative w-full h-64 md:h-96 overflow-hidden rounded-3xl shadow-2xl mb-12 transform transition duration-700 hover:scale-[1.01]" data-aos="fade-down" data-aos-duration="1000">
+                        <div id="carousel-slide" class="w-full h-full bg-cover bg-center transition-all duration-1000 carousel-fade" style="background-image: linear-gradient(65deg, #115e59dd, #2c4a4ecc), url('https://images.unsplash.com/photo-1576765973723-c1c3aee5f6a6?q=80&w=2070&auto=format&fit=crop'); background-blend-mode: overlay;"></div>
+                        <button id="prevSlide" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/70 hover:bg-white text-teal-800 p-3 rounded-full shadow-lg transition-all hover:scale-110"><i class="fas fa-chevron-left"></i></button>
+                        <button id="nextSlide" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/70 hover:bg-white text-teal-800 p-3 rounded-full shadow-lg transition-all hover:scale-110"><i class="fas fa-chevron-right"></i></button>
+                        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3" id="carousel-dots">
+                            <span class="dot w-3 h-3 rounded-full bg-white/80 cursor-pointer transition-all"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-white/80 cursor-pointer transition-all"></span>
+                            <span class="dot w-3 h-3 rounded-full bg-white/80 cursor-pointer transition-all"></span>
+                        </div>
                     </div>
-                    <!-- arrow left -->
-                    <button id="prevSlide" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/60 hover:bg-white text-teal-800 p-3 rounded-full shadow-lg"><i class="fas fa-chevron-left"></i></button>
-                    <!-- arrow right -->
-                    <button id="nextSlide" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/60 hover:bg-white text-teal-800 p-3 rounded-full shadow-lg"><i class="fas fa-chevron-right"></i></button>
-                    <!-- dots container -->
-                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3" id="carousel-dots">
-                        <span class="dot w-3 h-3 rounded-full bg-white/70 cursor-pointer"></span>
-                        <span class="dot w-3 h-3 rounded-full bg-white/70 cursor-pointer"></span>
-                        <span class="dot w-3 h-3 rounded-full bg-white/70 cursor-pointer"></span>
-                    </div>
-                </div>
 
-                <!-- home content -->
-                <div class="text-center max-w-3xl mx-auto">
-                    <h1 class="text-4xl md:text-5xl font-bold text-teal-800 mb-4">Welcome to Spring of Hope International</h1>
-                    <p class="text-lg text-gray-700 leading-relaxed mb-6">Spring of Hope International is a humanitarian organization dedicated to promoting mental health awareness, emotional wellbeing, and suicide prevention. We believe that every person deserves to be heard, understood, and supported, especially during times of emotional distress.</p>
-                    <p class="text-gray-600 mb-8">Our organization works to provide empathetic listening, community awareness programs, and volunteer support services that help individuals cope with life’s challenges and rediscover hope. Through our work, we aim to build a society where no one feels alone in their struggles.</p>
-                </div>
+                    <!-- home content with AOS -->
+                    <div class="text-center max-w-3xl mx-auto" data-aos="zoom-in-up" data-aos-delay="200">
+                        <h1 class="text-5xl md:text-6xl font-extrabold text-teal-900 mb-4 drop-shadow-md">Welcome to <span class="bg-gradient-to-r from-teal-700 to-amber-700 bg-clip-text text-transparent">Spring of Hope</span></h1>
+                        <p class="text-lg text-gray-700 leading-relaxed mb-6 bg-white/60 p-4 rounded-2xl backdrop-blur-sm">Spring of Hope International is a humanitarian organization dedicated to promoting mental health awareness, emotional wellbeing, and suicide prevention. We believe that every person deserves to be heard, understood, and supported.</p>
+                    </div>
 
-                <!-- mission/vision cards -->
-                <div class="grid md:grid-cols-2 gap-8 mt-12">
-                    <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-teal-600">
-                        <h2 class="text-2xl font-semibold text-teal-700 mb-3"><i class="fas fa-bullseye mr-2"></i>Our Mission</h2>
-                        <p class="text-gray-700">To provide compassionate emotional support and mental health awareness programs that empower individuals and communities to overcome emotional distress and prevent suicide.</p>
+                    <!-- mission/vision with hover 3d -->
+                    <div class="grid md:grid-cols-2 gap-8 mt-12">
+                        <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl hover-lift border border-teal-100" data-aos="flip-left">
+                            <h2 class="text-2xl font-semibold text-teal-700 mb-3"><i class="fas fa-bullseye mr-2 text-amber-600"></i>Our Mission</h2>
+                            <p class="text-gray-700">To provide compassionate emotional support and mental health awareness programs that empower individuals and communities to overcome emotional distress and prevent suicide.</p>
+                        </div>
+                        <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl hover-lift border border-teal-100" data-aos="flip-right" data-aos-delay="100">
+                            <h2 class="text-2xl font-semibold text-teal-700 mb-3"><i class="fas fa-eye mr-2 text-amber-600"></i>Our Vision</h2>
+                            <p class="text-gray-700">A world where mental health is understood, respected, and supported, and where every individual has access to compassionate emotional support.</p>
+                        </div>
                     </div>
-                    <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-teal-600">
-                        <h2 class="text-2xl font-semibold text-teal-700 mb-3"><i class="fas fa-eye mr-2"></i>Our Vision</h2>
-                        <p class="text-gray-700">A world where mental health is understood, respected, and supported, and where every individual has access to compassionate emotional support.</p>
-                    </div>
-                </div>
 
-                <!-- what we do & "you are not alone" -->
-                <div class="mt-16 bg-teal-700 text-white p-10 rounded-3xl shadow-xl">
-                    <h2 class="text-3xl font-bold mb-6">What We Do</h2>
-                    <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4 text-center">
-                        <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm"><i class="fas fa-heart text-3xl mb-2"></i>Mental Health & Suicide Prevention</div>
-                        <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm"><i class="fas fa-phone-alt text-3xl mb-2"></i>Emotional Support Services</div>
-                        <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm"><i class="fas fa-users text-3xl mb-2"></i>Youth Empowerment</div>
-                        <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm"><i class="fas fa-tree text-3xl mb-2"></i>Community Mental Health Awareness</div>
-                        <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm"><i class="fas fa-chalkboard-teacher text-3xl mb-2"></i>Volunteer Training & Development</div>
-                    </div>
-                    <div class="mt-10 border-t border-white/40 pt-8 text-center">
-                        <p class="text-2xl font-light italic">“You Are Not Alone”</p>
-                        <p class="max-w-2xl mx-auto mt-4">If you are experiencing emotional distress, loneliness, or feelings of hopelessness, please remember that help is available and your life matters. Spring of Hope International is committed to offering a safe and confidential space where individuals can talk openly and be heard without judgment.</p>
+                    <!-- glassmorphism what we do -->
+                    <div class="mt-16 bg-teal-800/90 backdrop-blur-sm text-white p-10 rounded-3xl shadow-2xl border border-teal-300" data-aos="fade-up">
+                        <h2 class="text-3xl font-bold mb-6 flex items-center"><i class="fas fa-heart text-amber-300 mr-3"></i> What We Do</h2>
+                        <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-4 text-center">
+                            <div class="bg-white/20 p-4 rounded-xl backdrop-blur-md hover:bg-white/30 transition"><i class="fas fa-brain text-3xl mb-2"></i>Mental Health & Suicide Prevention</div>
+                            <div class="bg-white/20 p-4 rounded-xl backdrop-blur-md hover:bg-white/30 transition"><i class="fas fa-phone-alt text-3xl mb-2"></i>Emotional Support Services</div>
+                            <div class="bg-white/20 p-4 rounded-xl backdrop-blur-md hover:bg-white/30 transition"><i class="fas fa-users text-3xl mb-2"></i>Youth Empowerment</div>
+                            <div class="bg-white/20 p-4 rounded-xl backdrop-blur-md hover:bg-white/30 transition"><i class="fas fa-tree text-3xl mb-2"></i>Community Mental Health Awareness</div>
+                            <div class="bg-white/20 p-4 rounded-xl backdrop-blur-md hover:bg-white/30 transition"><i class="fas fa-chalkboard-teacher text-3xl mb-2"></i>Volunteer Training & Development</div>
+                        </div>
+                        <div class="mt-10 border-t border-white/40 pt-8 text-center">
+                            <p class="text-3xl font-light italic drop-shadow-lg">“You Are Not Alone”</p>
+                            <p class="max-w-2xl mx-auto mt-4">If you are experiencing emotional distress, loneliness, or feelings of hopelessness, please remember that help is available and your life matters.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== ABOUT US ===== -->
-        <section id="about" class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-4xl font-bold text-teal-800 mb-8 text-center">About Us</h2>
-                <div class="prose prose-lg max-w-4xl mx-auto text-gray-700">
-                    <p class="mb-4"><span class="font-bold text-teal-700">Our Story:</span> Spring of Hope International was founded with the goal of addressing the growing need for mental health awareness and emotional support within communities. Many individuals face emotional pain, loneliness, and life challenges without having someone who will listen with empathy and understanding. Our organization was created to help bridge this gap by providing support, education, and compassionate listening services. Inspired by global mental health initiatives and the principles of organizations such as Befrienders Worldwide, Spring of Hope International seeks to empower individuals and communities to prioritize emotional wellbeing.</p>
-                </div>
-                <!-- core values grid -->
-                <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-teal-50 p-6 rounded-xl border border-teal-200"><i class="fas fa-heart text-teal-700 text-2xl mb-3"></i><h3 class="font-bold text-xl">Empathy</h3><p>We strive to understand and share the feelings of those who seek support.</p></div>
-                    <div class="bg-teal-50 p-6 rounded-xl border border-teal-200"><i class="fas fa-lock text-teal-700 text-2xl mb-3"></i><h3 class="font-bold text-xl">Confidentiality</h3><p>We respect and protect the privacy of all individuals who reach out to us.</p></div>
-                    <div class="bg-teal-50 p-6 rounded-xl border border-teal-200"><i class="fas fa-hand-holding-heart text-teal-700 text-2xl mb-3"></i><h3 class="font-bold text-xl">Compassion</h3><p>We approach every individual with kindness and care.</p></div>
-                    <div class="bg-teal-50 p-6 rounded-xl border border-teal-200"><i class="fas fa-user-check text-teal-700 text-2xl mb-3"></i><h3 class="font-bold text-xl">Respect</h3><p>We honor the dignity and unique experiences of every person.</p></div>
-                    <div class="bg-teal-50 p-6 rounded-xl border border-teal-200"><i class="fas fa-balance-scale text-teal-700 text-2xl mb-3"></i><h3 class="font-bold text-xl">Non-Judgment</h3><p>We provide support without criticism or discrimination.</p></div>
-                    <div class="bg-teal-50 p-6 rounded-xl border border-teal-200"><i class="fas fa-shield-alt text-teal-700 text-2xl mb-3"></i><h3 class="font-bold text-xl">Integrity</h3><p>We act responsibly and ethically in all our work.</p></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== OUR PROGRAMS ===== -->
-        <section id="programs" class="py-16 bg-teal-50">
+        <!-- ===== ABOUT with animated charts (using Chart.js) ===== -->
+        <section id="about" class="py-20 bg-gradient-to-br from-teal-50 via-white to-amber-50">
             <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-4xl font-bold text-teal-800 mb-10 text-center">Our Programs</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg"><i class="fas fa-brain text-teal-600 text-3xl mb-3"></i><h3 class="font-bold text-xl">Mental Health & Suicide Prevention</h3><p>Raise awareness, reduce stigma, and provide support through education and community dialogue.</p></div>
-                    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg"><i class="fas fa-headphones text-teal-600 text-3xl mb-3"></i><h3 class="font-bold text-xl">Emotional Support Services</h3><p>Compassionate listening by trained volunteers skilled in active listening and empathy.</p></div>
-                    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg"><i class="fas fa-rocket text-teal-600 text-3xl mb-3"></i><h3 class="font-bold text-xl">Youth Empowerment</h3><p>Leadership training, mental health education, life skills, peer support.</p></div>
-                    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg"><i class="fas fa-globe-africa text-teal-600 text-3xl mb-3"></i><h3 class="font-bold text-xl">Community Outreach</h3><p>Open conversations about mental health, supporting individuals in distress.</p></div>
-                    <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg"><i class="fas fa-hands-helping text-teal-600 text-3xl mb-3"></i><h3 class="font-bold text-xl">Volunteer Development</h3><p>Training in active listening, emotional support, crisis communication, ethics.</p></div>
+                <h2 class="text-5xl font-bold text-teal-800 mb-8 text-center" data-aos="fade-down">About Us</h2>
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="lg:w-1/2" data-aos="fade-right">
+                        <p class="text-lg text-gray-700 mb-4 leading-relaxed"><span class="font-bold text-teal-700">Our Story:</span> Spring of Hope International was founded to address the growing need for mental health awareness and emotional support. Inspired by global initiatives, we empower communities to prioritize emotional wellbeing.</p>
+                        <!-- core values mini list with icons -->
+                        <div class="grid grid-cols-2 gap-3 mt-6">
+                            <div class="flex items-center space-x-2 bg-teal-100 p-2 rounded-full px-4"><i class="fas fa-heart text-teal-600"></i><span>Empathy</span></div>
+                            <div class="flex items-center space-x-2 bg-teal-100 p-2 rounded-full px-4"><i class="fas fa-lock text-teal-600"></i><span>Confidentiality</span></div>
+                            <div class="flex items-center space-x-2 bg-teal-100 p-2 rounded-full px-4"><i class="fas fa-hand-holding-heart text-teal-600"></i><span>Compassion</span></div>
+                            <div class="flex items-center space-x-2 bg-teal-100 p-2 rounded-full px-4"><i class="fas fa-user-check text-teal-600"></i><span>Respect</span></div>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 grid grid-cols-2 gap-6" data-aos="fade-left">
+                        <!-- Chart.js Doughnut charts: we'll create two canvases -->
+                        <div class="bg-white p-4 rounded-2xl shadow-lg">
+                            <h3 class="text-center font-semibold">Support reach</h3>
+                            <div class="chart-container"><canvas id="chartReach"></canvas></div>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-lg">
+                            <h3 class="text-center font-semibold">Program focus</h3>
+                            <div class="chart-container"><canvas id="chartFocus"></canvas></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== GET HELP ===== -->
-        <section id="get-help" class="py-16 bg-white">
+        <!-- ===== PROGRAMS with hover 3d + bar chart ===== -->
+        <section id="programs" class="py-20 parallax" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop');">
+            <div class="bg-teal-900/70 backdrop-blur-sm py-20">
+                <div class="max-w-7xl mx-auto px-4">
+                    <h2 class="text-5xl font-bold text-white mb-10 text-center drop-shadow-lg" data-aos="zoom-in">Our Programs</h2>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-3xl shadow-2xl hover-lift border border-amber-200" data-aos="flip-up"><i class="fas fa-brain text-teal-600 text-3xl mb-3"></i><h3 class="font-bold text-xl">Mental Health & Suicide Prevention</h3><p>Raise awareness, reduce stigma.</p></div>
+                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-3xl shadow-2xl hover-lift border border-amber-200" data-aos="flip-up" data-aos-delay="50"><i class="fas fa-headphones text-teal-600 text-3xl mb-3"></i><h3 class="font-bold text-xl">Emotional Support Services</h3><p>Active listening, empathy.</p></div>
+                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-3xl shadow-2xl hover-lift border border-amber-200" data-aos="flip-up" data-aos-delay="100"><i class="fas fa-rocket text-teal-600 text-3xl mb-3"></i><h3 class="font-bold text-xl">Youth Empowerment</h3><p>Leadership, life skills, peer support.</p></div>
+                    </div>
+                    <!-- simple bar chart canvas -->
+                    <div class="mt-16 bg-white/80 p-6 rounded-3xl max-w-3xl mx-auto" data-aos="fade-up">
+                        <h3 class="text-center text-xl font-semibold mb-4">Program impact (people reached)</h3>
+                        <canvas id="barChart" style="height:250px; width:100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== GET HELP (pulse animation) ===== -->
+        <section id="get-help" class="py-20 bg-gradient-to-r from-red-50 to-amber-50">
             <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-4xl font-bold text-teal-800 mb-6 text-center">Get Help — You Are Not Alone</h2>
-                <div class="bg-amber-50 border-l-8 border-amber-500 p-8 rounded-2xl max-w-4xl mx-auto">
-                    <p class="text-xl mb-4">If you are experiencing emotional distress, loneliness, anxiety, or thoughts of suicide, please know that you are not alone. Many people experience difficult moments, and reaching out can be an important step toward healing.</p>
-                    <p class="font-semibold">Ways to reach out:</p>
-                    <ul class="list-disc list-inside mt-2 space-y-1">
-                        <li><i class="fas fa-envelope text-teal-700 mr-2"></i>Email support: <a href="mailto:info@springofhopeinternational.org" class="text-teal-600 underline">info@springofhopeinternational.org</a></li>
-                        <li><i class="fas fa-phone-alt text-teal-700 mr-2"></i>Phone contact: (to be added) — please check back</li>
-                        <li><i class="fas fa-comment-dots text-teal-700 mr-2"></i>Online messages via contact form</li>
-                        <li><i class="fas fa-users text-teal-700 mr-2"></i>Community support programs</li>
+                <h2 class="text-5xl font-bold text-teal-800 mb-6 text-center" data-aos="flip-left">Get Help — You Are Not Alone</h2>
+                <div class="bg-white/80 backdrop-blur-sm border-l-8 border-amber-500 p-8 rounded-3xl max-w-4xl mx-auto shadow-2xl transition-all hover:scale-[1.01] duration-500" data-aos="zoom-in">
+                    <p class="text-xl mb-4 animate-pulse"><i class="fas fa-heartbeat text-red-500 mr-2"></i> If you are struggling, reach out.</p>
+                    <ul class="space-y-2">
+                        <li><i class="fas fa-envelope text-teal-700 mr-2"></i> info@springofhopeinternational.org</li>
+                        <li><i class="fas fa-phone-alt text-teal-700 mr-2"></i> (to be added) </li>
                     </ul>
-                    <div class="mt-6 p-4 bg-red-100 rounded"><i class="fas fa-exclamation-triangle text-red-600 mr-2"></i><span class="font-bold">In Emergency:</span> If you or someone you know is in immediate danger, please contact local emergency services or a medical professional immediately.</div>
+                    <div class="mt-6 p-4 bg-red-200/80 rounded-xl border border-red-400 animate-pulse"><i class="fas fa-exclamation-triangle text-red-700 mr-2"></i><span class="font-bold">Emergency:</span> Call local emergency services immediately.</div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== VOLUNTEER ===== -->
-        <section id="volunteer" class="py-16 bg-teal-50">
+        <!-- ===== VOLUNTEER ===== with chart & animation -->
+        <section id="volunteer" class="py-20 bg-teal-800 text-white parallax" style="background-image: url('https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=2070&auto=format&fit=crop');">
+            <div class="bg-black/40 backdrop-brightness-75 py-20">
+                <div class="max-w-7xl mx-auto px-4">
+                    <h2 class="text-5xl font-bold mb-8 text-center" data-aos="fade-down">Become a Volunteer</h2>
+                    <div class="grid md:grid-cols-2 gap-10 items-center">
+                        <div class="glass-card p-8 rounded-3xl" data-aos="fade-right">
+                            <i class="fas fa-heart text-amber-300 text-4xl mb-4"></i><h3 class="text-2xl font-semibold">Who can volunteer?</h3>
+                            <p class="mt-3">Compassionate, empathetic individuals wanting to make a difference.</p>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl" data-aos="fade-left">
+                            <i class="fas fa-chalkboard-teacher text-amber-300 text-4xl mb-4"></i><h3 class="text-2xl font-semibold">Training provided</h3>
+                            <ul class="list-disc pl-5"><li>Active listening</li><li>Emotional support</li><li>Crisis communication</li></ul>
+                        </div>
+                    </div>
+                    <!-- mini doughnut: volunteer skills -->
+                    <div class="mt-12 max-w-sm mx-auto bg-white/20 p-4 rounded-3xl">
+                        <canvas id="volunteerChart" style="height:150px; width:100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== RESOURCES & NEWS combined with AOS ===== -->
+        <section id="resources" class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-4xl font-bold text-teal-800 mb-8 text-center">Become a Volunteer</h2>
-                <div class="grid md:grid-cols-2 gap-10">
-                    <div class="bg-white p-8 rounded-3xl shadow"><i class="fas fa-heart text-teal-600 text-4xl mb-4"></i><h3 class="text-2xl font-semibold">Who can volunteer?</h3><p class="mt-3">We welcome compassionate, empathetic individuals who respect confidentiality and are willing to learn active listening skills. You can make a positive difference.</p></div>
-                    <div class="bg-white p-8 rounded-3xl shadow"><i class="fas fa-chalkboard-teacher text-teal-600 text-4xl mb-4"></i><h3 class="text-2xl font-semibold">Training provided</h3><ul class="list-disc mt-3 pl-5"><li>Active listening techniques</li><li>Emotional support skills</li><li>Mental health awareness</li><li>Ethical communication practices</li></ul></div>
+                <h2 class="text-5xl font-bold text-teal-800 mb-12 text-center" data-aos="fade">Resources & Updates</h2>
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div data-aos="fade-right">
+                        <h3 class="text-2xl font-semibold mb-4"><i class="fas fa-book-open text-teal-600 mr-2"></i>Mental Health Education</h3>
+                        <div class="space-y-3">
+                            <div class="bg-teal-50 p-3 rounded-xl hover:translate-x-2 transition">Understanding emotional distress</div>
+                            <div class="bg-teal-50 p-3 rounded-xl hover:translate-x-2 transition">Coping with stress and anxiety</div>
+                            <div class="bg-teal-50 p-3 rounded-xl hover:translate-x-2 transition">Supporting a friend in crisis</div>
+                        </div>
+                    </div>
+                    <div data-aos="fade-left">
+                        <h3 class="text-2xl font-semibold mb-4"><i class="fas fa-newspaper text-amber-600 mr-2"></i>News</h3>
+                        <div class="space-y-4">
+                            <div class="border p-4 rounded-xl shadow hover:shadow-lg transition flex"><i class="fas fa-calendar-check text-teal-600 mr-3"></i> May 2025: Mental health fair</div>
+                            <div class="border p-4 rounded-xl shadow hover:shadow-lg transition flex"><i class="fas fa-calendar-check text-teal-600 mr-3"></i> June 2025: Volunteer training</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== RESOURCES ===== -->
-        <section id="resources" class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-4xl font-bold text-teal-800 mb-8 text-center">Resources & Mental Health Education</h2>
-                <div class="grid sm:grid-cols-2 gap-6">
-                    <div class="border p-6 rounded-2xl shadow-sm hover:bg-teal-50"><i class="fas fa-spa text-teal-600 text-2xl mb-2"></i><h3 class="font-bold">Understanding emotional distress</h3><p>Learn to identify signs and find support.</p></div>
-                    <div class="border p-6 rounded-2xl shadow-sm hover:bg-teal-50"><i class="fas fa-wind text-teal-600 text-2xl mb-2"></i><h3 class="font-bold">Coping with stress and anxiety</h3><p>Practical strategies for daily wellbeing.</p></div>
-                    <div class="border p-6 rounded-2xl shadow-sm hover:bg-teal-50"><i class="fas fa-user-friends text-teal-600 text-2xl mb-2"></i><h3 class="font-bold">Supporting a friend in crisis</h3><p>How to be there for someone.</p></div>
-                    <div class="border p-6 rounded-2xl shadow-sm hover:bg-teal-50"><i class="fas fa-shield-heart text-teal-600 text-2xl mb-2"></i><h3 class="font-bold">Building emotional resilience</h3><p>Tools to navigate life's challenges.</p></div>
+        <!-- ===== DONATE with animated counter ===== -->
+        <section id="donate" class="py-20 bg-amber-50 text-center">
+            <div class="max-w-4xl mx-auto px-4" data-aos="zoom-in">
+                <i class="fas fa-hand-holding-heart text-teal-600 text-7xl mb-4 animate-bounce"></i>
+                <h2 class="text-5xl font-bold text-teal-800 mb-4">Support Our Mission</h2>
+                <p class="text-lg mb-6">Your support helps train volunteers and expand services. Every contribution brings hope.</p>
+                <div class="flex justify-center space-x-8 text-3xl font-bold text-teal-700 mb-6">
+                    <div><span class="counter" data-target="1500">0</span>+ <span class="text-base">volunteers</span></div>
+                    <div><span class="counter" data-target="25">0</span> <span class="text-base">programs</span></div>
                 </div>
-                <p class="mt-8 text-center text-gray-600">We promote community discussions and awareness campaigns to encourage open conversations about mental health.</p>
+                <button class="bg-teal-700 text-white px-10 py-5 rounded-full text-2xl font-semibold hover:bg-teal-800 shadow-2xl transition-all hover:scale-110"><i class="fas fa-donate mr-2"></i>Donate now</button>
             </div>
         </section>
 
-        <!-- ===== NEWS AND UPDATES ===== -->
-        <section id="news" class="py-16 bg-teal-50">
-            <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-4xl font-bold text-teal-800 mb-6 text-center">News & Updates</h2>
-                <p class="text-center mb-10">Stay informed about our outreach, campaigns, volunteer activities, and workshops.</p>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-white p-5 rounded-xl shadow"><i class="fas fa-calendar-check text-teal-600"></i> <span class="font-semibold">May 2025:</span> Community mental health fair in Monrovia.</div>
-                    <div class="bg-white p-5 rounded-xl shadow"><i class="fas fa-calendar-check text-teal-600"></i> <span class="font-semibold">June 2025:</span> Volunteer training – active listening (online).</div>
-                    <div class="bg-white p-5 rounded-xl shadow"><i class="fas fa-calendar-check text-teal-600"></i> <span class="font-semibold">July 2025:</span> Youth empowerment workshop.</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== DONATE ===== -->
-        <section id="donate" class="py-16 bg-white">
-            <div class="max-w-4xl mx-auto text-center px-4">
-                <i class="fas fa-hand-holding-heart text-teal-600 text-6xl mb-4"></i>
-                <h2 class="text-4xl font-bold text-teal-800 mb-4">Support Our Mission</h2>
-                <p class="text-lg mb-6">Your support helps train volunteers, organize awareness programs, develop educational resources, and expand support services. Every contribution brings hope.</p>
-                <button class="bg-teal-700 text-white px-8 py-4 rounded-full text-xl font-semibold hover:bg-teal-800 shadow-lg transition"><i class="fas fa-donate mr-2"></i>Donate now (secure)</button>
-                <p class="text-sm mt-4 text-gray-500">*online donations coming soon – for now, contact us to support</p>
-            </div>
-        </section>
-
-        <!-- ===== CONTACT ===== -->
-        <section id="contact" class="py-16 bg-teal-50">
-            <div class="max-w-5xl mx-auto px-4">
-                <h2 class="text-4xl font-bold text-teal-800 mb-8 text-center">Get in Touch</h2>
-                <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
-                    <p class="text-center mb-8"><i class="fas fa-map-marker-alt text-teal-700"></i> Liberia &nbsp; | &nbsp; <i class="fas fa-envelope text-teal-700"></i> info@springofhopeinternational.org &nbsp; | &nbsp; <i class="fas fa-phone"></i> (to be added)</p>
-                    <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input type="text" placeholder="Your name" class="border p-3 rounded-xl w-full focus:ring-2 focus:ring-teal-400">
-                        <input type="email" placeholder="Email address" class="border p-3 rounded-xl w-full focus:ring-2 focus:ring-teal-400">
-                        <input type="text" placeholder="Subject" class="border p-3 rounded-xl md:col-span-2">
-                        <textarea rows="4" placeholder="Your message..." class="border p-3 rounded-xl md:col-span-2"></textarea>
-                        <button class="bg-teal-700 text-white px-6 py-3 rounded-xl md:col-span-2 font-semibold hover:bg-teal-800 transition">Send message</button>
-                    </form>
+        <!-- ===== CONTACT with form animation ===== -->
+        <section id="contact" class="py-20 bg-teal-900 text-white parallax" style="background-image: url('https://images.unsplash.com/photo-1488521787991-aa4c9e0f5c5e?q=80&w=2070&auto=format&fit=crop');">
+            <div class="bg-black/50 backdrop-brightness-75 py-20">
+                <div class="max-w-5xl mx-auto px-4">
+                    <h2 class="text-5xl font-bold mb-8 text-center" data-aos="fade">Get in Touch</h2>
+                    <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 md:p-12 border border-white/30" data-aos="flip-up">
+                        <p class="text-center mb-8"><i class="fas fa-map-marker-alt text-amber-300"></i> Liberia &nbsp; | &nbsp; <i class="fas fa-envelope text-amber-300"></i> info@springofhopeinternational.org</p>
+                        <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <input type="text" placeholder="Your name" class="bg-white/20 border-0 p-3 rounded-xl w-full focus:ring-4 focus:ring-amber-400 transition">
+                            <input type="email" placeholder="Email" class="bg-white/20 border-0 p-3 rounded-xl w-full focus:ring-4 focus:ring-amber-400">
+                            <input type="text" placeholder="Subject" class="bg-white/20 border-0 p-3 rounded-xl md:col-span-2">
+                            <textarea rows="4" placeholder="Message..." class="bg-white/20 border-0 p-3 rounded-xl md:col-span-2"></textarea>
+                            <button class="bg-amber-500 text-teal-900 px-6 py-3 rounded-xl md:col-span-2 font-bold hover:bg-amber-400 transition-all hover:scale-105">Send message <i class="fas fa-paper-plane ml-2"></i></button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- footer -->
-    <footer class="bg-teal-800 text-white py-8">
-        <div class="max-w-7xl mx-auto text-center px-4">
-            <p>© 2025 Spring of Hope International — mental health, hope, and compassion.</p>
-            <p class="mt-2 text-teal-200"><i class="fas fa-seedling"></i> You are not alone.</p>
-        </div>
+    <footer class="bg-teal-900 text-white py-6 text-center">
+        <p>© 2025 Spring of Hope International — hope & compassion.</p>
     </footer>
 
-    <!-- Carousel JavaScript (dynamic) -->
+    <!-- Scripts: AOS, Chart.js, counters, carousel -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
+        // init AOS
+        AOS.init({ duration: 1000, once: false, mirror: true });
+
+        // Carousel 
         (function() {
             const slides = [
-                { bg: "linear-gradient(45deg, #0b3f3bbb, #1e5952cc), url('https://images.unsplash.com/photo-1576765973723-c1c3aee5f6a6?q=80&w=2070&auto=format&fit=crop')", caption: "Compassionate listening & hope" },
-                { bg: "linear-gradient(45deg, #0a4d44bb, #235b4ecc), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop')", caption: "Community mental health awareness" },
-                { bg: "linear-gradient(45deg, #0e5e51bb, #2f675bcc), url('https://images.unsplash.com/photo-1542816417-0983c9c9ad53?q=80&w=2070&auto=format&fit=crop')", caption: "Youth empowerment & support" }
+                { bg: "linear-gradient(45deg, #115e59dd, #2c4a4ecc), url('https://images.unsplash.com/photo-1576765973723-c1c3aee5f6a6?q=80&w=2070&auto=format&fit=crop')" },
+                { bg: "linear-gradient(45deg, #0a4d44dd, #235b4ecc), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop')" },
+                { bg: "linear-gradient(45deg, #0e5e51dd, #2f675bcc), url('https://images.unsplash.com/photo-1542816417-0983c9c9ad53?q=80&w=2070&auto=format&fit=crop')" }
             ];
             let current = 0;
             const slideDiv = document.getElementById('carousel-slide');
             const dots = document.querySelectorAll('.dot');
-            const prevBtn = document.getElementById('prevSlide');
-            const nextBtn = document.getElementById('nextSlide');
-
-            function updateSlide(index) {
-                if (index < 0) index = slides.length - 1;
-                if (index >= slides.length) index = 0;
-                current = index;
+            const prev = document.getElementById('prevSlide');
+            const next = document.getElementById('nextSlide');
+            function update(i) {
+                if (i<0) i=slides.length-1; if (i>=slides.length) i=0; current=i;
                 slideDiv.style.backgroundImage = slides[current].bg;
                 slideDiv.style.backgroundBlendMode = 'overlay';
-                slideDiv.style.backgroundSize = 'cover';
-                slideDiv.style.backgroundPosition = 'center';
-                // set caption inside slide (optional extra)
-                // update dots
-                dots.forEach((dot, i) => {
-                    if (i === current) dot.classList.add('active', 'bg-teal-600');
-                    else dot.classList.remove('active', 'bg-teal-600');
-                });
+                dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
             }
-
-            prevBtn.addEventListener('click', (e) => { e.preventDefault(); updateSlide(current - 1); });
-            nextBtn.addEventListener('click', (e) => { e.preventDefault(); updateSlide(current + 1); });
-            dots.forEach((dot, idx) => {
-                dot.addEventListener('click', () => updateSlide(idx));
-            });
-
-            // auto cycle every 6 seconds
-            setInterval(() => { updateSlide(current + 1); }, 6000);
-            updateSlide(0); // init
+            prev.addEventListener('click', (e) => { e.preventDefault(); update(current-1); });
+            next.addEventListener('click', (e) => { e.preventDefault(); update(current+1); });
+            dots.forEach((d, i) => d.addEventListener('click', () => update(i)));
+            setInterval(() => update(current+1), 6000);
+            update(0);
         })();
+
+        // Charts
+        // Reach chart (doughnut)
+        new Chart(document.getElementById('chartReach'), { type: 'doughnut', data: { labels: ['Individuals', 'Communities'], datasets: [{ data: [65, 35], backgroundColor: ['#0f766e', '#fbbf24'] }] } });
+        new Chart(document.getElementById('chartFocus'), { type: 'doughnut', data: { labels: ['Youth', 'Suicide prev', 'Support'], datasets: [{ data: [40, 35, 25], backgroundColor: ['#2dd4bf', '#f59e0b', '#94a3b8'] }] } });
+        new Chart(document.getElementById('barChart'), { type: 'bar', data: { labels: ['Mental Health', 'Youth', 'Support'], datasets: [{ label: 'people (thousands)', data: [12, 19, 8], backgroundColor: '#0d9488' }] } });
+        new Chart(document.getElementById('volunteerChart'), { type: 'doughnut', data: { labels: ['Active listening', 'Crisis', 'Empathy'], datasets: [{ data: [50, 30, 20], backgroundColor: ['#fbbf24', '#f59e0b', '#d97706'] }] } });
+
+        // simple counter animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const increment = target / speed;
+                if (count < target) { counter.innerText = Math.ceil(count + increment); setTimeout(updateCount, 20); }
+                else counter.innerText = target;
+            };
+            updateCount();
+        });
     </script>
-    <!-- small style to make active dot visible (teal) -->
 </body>
 </html>
